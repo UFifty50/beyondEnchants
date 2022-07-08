@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'xyz.ufifty50sh.beyondenchants'
+version '1.0-SNAPSHOT'
+
+// === Change this to match the workspace defined inside the start.sh script.
+String workspace = '.papermc'
+
+sourceCompatibility = 17
+
+repositories() {
+    mavenCentral()
+    maven { url "https://repo.papermc.io/repository/maven-public/" }
+}
+
+dependencies {
+    implementation "io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT"
+}
+
+jar {
+    String userHome = System.properties['user.home']
+    destinationDirectory = file("$userHome/$workspace/plugins")
+    archiveFileName = project.name + ".jar"
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
